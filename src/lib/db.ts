@@ -4,10 +4,10 @@ const MONGODB_URI = process.env.MONGODB_URI;
 
 if (!MONGODB_URI) throw new Error("Please define mongo_uri in env");
 
-const cached = global.mongoose;
+let cached = global.mongoose;
 
 if (!cached) {
-    global.mongoose = { conn: null, promise: null };
+    cached = global.mongoose = { conn: null, promise: null };
 }
 
 export const ConnectToDB = async () => {
@@ -19,7 +19,7 @@ export const ConnectToDB = async () => {
             maxPoolSize: 10,
         };
 
-        mongoose.connect(MONGODB_URI).then(() => mongoose.connection);
+        mongoose.connect(MONGODB_URI, opts).then(() => mongoose.connection);
     }
 
     try {
